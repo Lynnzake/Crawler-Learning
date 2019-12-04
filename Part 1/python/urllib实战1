@@ -1,0 +1,25 @@
+#爬取豆瓣提供方
+from urllib.request import urlopen
+data=urlopen("https://read.douban.com/provider/all")
+data=data.read()
+data=data.decode(utf-8)#改变编码形式，进行解码编码为encode
+import re
+pat='<div class="name">(.*?)</div>'
+mydata=re.compile(pat).findall(data)
+fh=open("G:/PM/urllib.txt","w")
+for i in range(0,len(mydata)):
+    fh.write(mydata[i]+"\n")
+#结果显示urllib.error.HTTPError: HTTP Error 403: Forbidden
+'''urllib.request.urlopen 方式打开一个URL,服务器端
+只会收到一个单纯的对于该页面访问的请求,但是服务器并不知道
+发送这个请求使用的浏览器,操作系统,硬件平台等信息,而
+缺失这些信息的请求往往都是非正常的访问,例如爬虫.
+有些网站为了防止这种非正常的访问,会验证请求信息中的
+UserAgent(它的信息包括硬件平台、系统软件、
+应用软件和用户个人偏好),如果UserAgent存在异常或者是不存在,
+那么这次请求将会被拒绝(如上错误信息所示)'''
+
+
+
+
+
