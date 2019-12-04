@@ -1,0 +1,31 @@
+import urllib.request
+#urlretrieve()将网页爬取到本地，含两个参数，网址与本地地址
+urllib.request.urlretrieve("http://www.baidu.com",filename="G:/PM/python_learning/baidu.html")
+'''
+>>> urllib.request.urlretrieve("http://www.baidu.com",filename="G:/PM/python_learning/baidu.html")
+('G:/PM/python_learning/baidu.html', <http.client.HTTPMessage object at 0x000001A4FB210C50>)
+>>>
+'''
+#urlcleanup()将urlretrieve产生的缓存清理掉
+#info()获取相关信息
+file=urllib.request.urlopen("http://www.baidu.com/")
+state=file.info()
+#getcode()返回网页的状态码，如200，402等
+print(state)
+statenumber=file.getcode()
+print(statenumber)
+#geturl()返回爬取的网站名
+url=file.geturl()
+print(url)
+#超时设置，由于网页长时间未反应，可设置超时的时间值timeout()
+file1=urllib.request.urlopen("http://www.baidu.com/",timeout=1)
+
+#异常设置，超时时间的合理设置可提高爬虫效率
+for i in range(0,100):
+    try:
+        file2=urllib.request.urlopen("http://www.taobao.com/",timeout=1)
+        data=file2.read()
+        print(len(data))
+    except Exception as e:
+        print("出现异常："+str(e))
+
