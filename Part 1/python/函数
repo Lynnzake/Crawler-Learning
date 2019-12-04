@@ -1,0 +1,36 @@
+'''
+#作用域
+i=10#全局变量
+def func():
+    j=6
+    j+=1
+    print(j)#此时程序无输出，因为此函数未得到调用
+print(i)#输出i=10
+func()#实现调用
+try:#可用try...except跳过异常,此外if语句可以处理异常
+    print(j)#j为局部变量，生存期为函数内部
+except:
+    i=10#全局变量
+    def func():
+        j=6#可用globle对变量进行全局声明
+        j+=1
+        print(j)#此时程序无输出，因为此函数未得到调用
+    print(i)#输出i=10
+    print(j)#j为局部变量，生存期为函数内部
+    func()#实现调用,与上面相比并没有输出j=7，因为程序在上一句遇到异常停止了
+
+
+try:
+    comand    comand1无异常则执行comand2
+    comand2
+except:
+    comand3   try中的任意一个语句出现异常，则执行except中语句
+'''
+
+
+#函数的定义和调用
+def add(a,b):
+    c=a+b
+    print(c)
+add(1,3)
+
