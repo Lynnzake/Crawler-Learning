@@ -1,0 +1,23 @@
+ #自动模拟HTTP请求，简单的post与get方式
+'''
+https://www.baidu.com/s?wd=python&rsv_spt=1
+观察该网址，?之后为网页get请求，=左边称为字段名，右边为字段
+值，&用于连接不同的字段
+wd=python，显示搜索的内容为python
+https://www.baidu.com/s?wd=智慧，则搜索结果为智慧
+'''
+import urllib.request
+keyword="python"#当关键词是中文时，要进行相应的编码以防出错
+#使用quote()函数进行转码
+'''
+keyword="智慧"
+keyword=urllib.request.quote(keyword)
+'''
+#urllib不支持对https的直接爬取，但支持http
+url="http://www.baidu.com/s?wd="+keyword
+req=urllib.request.Request(url)#将请求进行封装模拟http请求
+data=urllib.request.urlopen(req).read()
+fh=open("G:/PM/file2.html","wb")
+fh.write(data)
+fh.close()
+
