@@ -1,0 +1,43 @@
+print("the following is if context")
+a=8
+if(a<6):#if语句的条件控制可以不要括号，但是需要加上一个空格if a<6
+    print(True)
+elif(a>8):#记住添加冒号 冒号 冒号（for if while）
+    print(a)
+else:#对应a<=8&&a>=6的情况
+    print(False)
+print(" ")
+
+
+
+print("The following is while context")
+b=6
+print("Countdown is begining")
+while(b>0):#同if相似，while的条件控制可以不要括号，但需空格隔开
+    print(b)
+    b-=1#python不支持自增自减操作，即b--,b++无法执行
+print(" ")
+
+
+
+print("for_context")
+i=1
+a=["I","L","O","V","E","YOU"]
+for i in a:
+    print(i)
+#此处i的赋值不起作用，是因为这个语境里for实现的是列表的遍历，作为一个生成器使用
+
+
+for i in range(1,5):#range函数实现从1到4，4个数字的控制
+    print("Yes")
+#range函数还可以设置步长，range(a,b,c),a为起始，b为终止，c为步长
+for i in range(10,0,-1):
+    print(i)
+
+#中断一次循环，使用continue语句；中断一个循环，使用break语句
+for i in range(5):#range(n)和range(a,b)功能相似
+    if i==3:
+        break
+    elif i==2:
+        continue#即此时不输出i=2
+    print("i=",i)#多个元素的输出用逗号隔开
