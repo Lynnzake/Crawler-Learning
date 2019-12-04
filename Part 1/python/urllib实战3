@@ -1,0 +1,13 @@
+#使用python登录一个网站
+import urllib.request
+import urllib.parse#需要对相应的字段进行处理，导入parse模块
+url="http://www.iqianyue.com/mypost/"
+user=urllib.parse.urlencode(
+    {"name":"ceo@sina.com",
+     "password":"123456"
+        }).encode("utf-8")#字典记录登录名和密码
+req=urllib.request.Request(url,user)#封装为一个请求
+result=urllib.request.urlopen(req).read()
+fh=open("G:/PM/fo.html","wb")
+fh.write(result)
+fh.close()
