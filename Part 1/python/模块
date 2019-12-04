@@ -1,0 +1,23 @@
+'''
+将一类函数组合在一起，成为模块，里面的函数称为模块的方法
+系统自带的模块放在安装目录的lib目录中
+import 模块         导入整个模块
+from ... import...  导入具体方法
+'''
+#import urllib
+#data_baidu=urllib.request.urlopen('http://www.baidu.com/').read()
+
+from urllib.request import urlopen
+data_baidu=urlopen('http://www.baidu.com/').read()
+print(len(data_baidu))#显示网页的大小
+#text=str(data_baidu)#显示网页内容
+#print(text)
+'''
+上面几行代码不能使用是因为导入模块进行使用时需要一层层的导入，
+不可以导入最外层，使用最里层
+'''
+from urllib import request
+data_taobao=request.urlopen("http://www.taobao.com/").read()
+print("淘宝网页长度为",len(data_taobao))
+
+#自定义模块，已在lib目录下新建lynn模块，以后新建模块将位于我的目录下
