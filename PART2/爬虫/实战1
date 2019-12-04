@@ -1,0 +1,33 @@
+'''
+需求：将新浪新闻首页（http://news.sina.com.cn）所有新闻都爬到本地
+思路：先爬首页，通过正则获取所有新闻链接，然后依次爬各新闻，并存储到本地
+'''
+import re
+import urllib.request
+data=urllib.request.urlopen("http://news.sina.com.cn").read()
+data=data.decode("utf-8","ignore")
+pat='href="(https://news.sina.com.cn/.*?)"'
+allurl=re.compile(pat).findall(data)
+for i in range(0,len(allurl)):#allurl将会保存在一个列表中
+    '''
+    try:
+        content[i]=urllib.request.urlopen(allurl[i])
+        file=open("G:/PM/python_learning/homework"+str(i)+".html","wb")
+        file.write(content[i])
+    except Exception as e:
+        print("此网页爬取失败")
+    此段代码未爬取成功
+    '''
+    try:
+        print("第"+str(i)+"次爬取")
+        thisurl=allurl[i]
+        file="G:/PM/python_learning/homework/"+str(i)+".html"
+        #这么写为什么也可以创建相应的文件，与open一样的作用？
+        #python对语句中的路径有相应的判断，故直接创建相应的html文件
+        urllib.request.urlretrieve(thisurl,file)#urlretrieve函数
+        print("--成功--")
+    except urllib.error.URLError as e:
+        if hasattr(e,"code"):#hasattr() 函数用于判断对象是否包含对应的属性。
+            print(e.code)
+        if hasattr(e,"reason"):
+            print(e.reason)
