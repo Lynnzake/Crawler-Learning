@@ -29,3 +29,4 @@ for i in range(0,10):#从0到9，共十次
         file="G:/PM/Python_learning/homework/"+str(i)+str(j)+".jpg"
         urllib.request.urlretrieve(thisimgurl,filename=file)
 #尝试失败，现在淘宝的登录有相关的算法加密，此次爬取到这结束
+#抓包工具充当代理，手动设置IP地址，进行代理模拟，查询JS代码，获取更详尽的信息
