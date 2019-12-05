@@ -1,0 +1,31 @@
+import urllib.request
+import re
+import urllib.parse#需要对相关字段进行处理，导入parse模块
+url="http://www.taobao.com"
+keyword="短裙"
+user=urllib.parse.urlencode(
+    {"name":"13130446028"
+     "id":"5201314qwezxc?"
+     }).encode("utf-8")
+key=urllib.request.Request(url,user).quote(keywd)#quote进行编码
+headers=("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36")
+opener=urllib.request.build_opener()
+opener.addheaders=[headers]
+urllib.request.install_opener(opener)#安装为全局opener
+for i in range(0,10):#从0到9，共十次
+    url="https://s.taobao.com/list?q="+key+"&cat=16&style=grid&seller_type=taobao&spm=a219r.lm874.1000187.1&bcoffset=0&s="+str(i*60)
+    data=urllib.request.urlopen(url).read().decode("utf-8","ignore")
+    #对即将抓取的信息，如果再源码中可以找到则完成；若不能则需进行抓包分析
+    pat='"picUrl":"//(.*?)"'
+#"picUrl":"//g-search1.alicdn.com/img/bao/uploaded/TB2KpRNHH9YBuNjy0FgXXcxcXXa_!!613138720.jpg"
+    pic_urllist=re.compile(pat).findall(data)
+    print("pic_urllist",pic_urllist)
+#到这步发现爬取失败，考虑是否是因为淘宝有反爬虫功能（添加opener对象）
+#若添加了报头仍然没结果，考虑正则是否有问题
+#正则修改之后发现仍然没内容，现在淘宝需要登陆，所以先模拟一波登录
+    for j in range(0,len(pic_urllist)):
+        thisimg=pic_urllist[j]
+        thisimgurl="http://"+thisimg
+        file="G:/PM/Python_learning/homework/"+str(i)+str(j)+".jpg"
+        urllib.request.urlretrieve(thisimgurl,filename=file)
+#尝试失败，现在淘宝的登录有相关的算法加密，此次爬取到这结束
