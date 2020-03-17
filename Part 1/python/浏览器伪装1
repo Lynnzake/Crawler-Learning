@@ -1,0 +1,33 @@
+'''
+当我们对某些网页进行爬取的时候，会返回如403的错误，因为对方服务器会对爬虫进行
+屏蔽。此时，我们需要伪装成浏览器才能爬取。
+浏览器伪装我们一般通过报头进行
+由于urlopen()对于一些HTTP的高级功能不支持，所以，我们如果要修改报头，可以使用
+urllib.request.build_opener()进行，也可以使用urllib.request.Request()下的add_header()
+实现浏览器的模拟。
+'''
+import urllib.error
+import urllib.request
+try:#若无异常，则爬取www.taobao.com的内容
+    url="https://www.bilibili.com/video/av22571713?p=19"
+    header=("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36")
+    #urlopen默认不添加高级的报头，需使用build_opener
+    opener=urllib.request.build_opener()#创建一个opener对象
+    opener.addheaders=[header]#添加报头
+    data=opener.open(url).read()#以添加的报头去访问
+    data=data.decode(utf-8)#此处编码出现问题，当出现问题时修改为（"utf-8","ignore"）即可
+    
+    '''
+二进制 -> 转换 -> 字符串 需要解码 decode
+字符串 -> 转换 -> 二进制 需要编码 encode
+python3 内存中使用的字符串全部是 unicode 码,而网络上为utf-8，故需要编码与解码
+    '''
+    fh=open("G:/PM/python_learning/brower_disguised.html","wb")
+    fh.write(data)
+    fh.close()
+    
+except urllib.error.URLError as e:#使用try语句之后可以用URLError代替HTTPError
+    if hasattr(e,"code"):#判断是否有状态码
+        print(e.code)
+    if hasattr(e,"reason"):#异常产生的原因
+        print(e.reason)
