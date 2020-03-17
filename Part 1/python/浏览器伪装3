@@ -1,0 +1,15 @@
+import urllib.request
+import re
+url="http://blog.csdn.net/"
+header=("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36")
+opener=urllib.request.build_opener()
+opener.addheaders=[header]#opener下有open,urlopen不在opener下面
+urllib.request.install_opener(opener)#将opener对象添加为全局对象
+data=urllib.request.urlopen(url).read().decode("utf-8","ignore")#这些方法是平行的吗？为什么点记了那么多方法
+pat='<div class="title">\n.*<h2>\n.*<a href="(.*?)"'
+result=re.compile(pat).findall(data)
+print(len(result))
+for i in range(0,len(result)):
+    fh="G:/PM/Python_learning/homework/"+str(i)+".html"
+    urllib.request.urlretrieve(result[i],filename=fh)
+    print("第"+str(i)+"爬取成功")
