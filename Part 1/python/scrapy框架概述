@@ -1,0 +1,73 @@
+#scrapy框架是一个PY爬虫框架，非常适合做一些大型爬虫项目
+#python -m pip install --upgrade pip
+#百度也是一种爬虫
+#scrapy框架常见命令
+'''
+全局命令：
+fetch命令爬取网页
+scrapy hhh(命令名) -h得到命令的用法 -l得到命令列表
+--nolog 爬取时不显示相应日志
+runspider 不用创建scrapy项目而运行爬虫文件
+shell 进入scrapy交互终端，exit()退出shell
+version 查看scrapy版本
+view 下载某个网页并用浏览器查看（怎么实现这个接口的？绑定默认的浏览器）
+项目命令：
+bench 测试本地硬件的性能
+在创建的项目中，__init__.py为初始化文件，items.py为目标文件，容器，在其中设定爬
+取的内容
+pipelines.py用于信息的后处理，settings.py比如伪装浏览器，清除cookies
+spiders文件夹为爬虫文件夹
+genspider在项目里创建爬虫文件 #scrapy genspider -l(查看爬虫模板)
+scrapy genspider -t basic lynn baidu.com(限制爬虫域名，此处仅能爬取百度)
+scrapy genspider -t 模板名字 -t指定模板
+创建一个使用basic模板的爬虫文件lynn
+scrapy startproject lynn 创建名为lynn的爬虫项目
+scrapy check 检查爬虫是否OK
+scrapy crawl first --nolog  运行爬虫文件
+scrapy list 展示当下的爬虫文件
+scrapy parse http://www.baidu.com 获取相应网页 
+'''
+#第一个scrapy爬虫
+'''
+Xpath表达式：运行效率比正则快
+/ 表示从顶端开始一层一层寻找某个标签
+/html 表示从顶端开始寻找html标签下的内容
+/html/head/title/text()
+text()可以实现提取标签内的文本内容
+@提取相应标签的属性
+//提取所有的标签
+标签[@属性=值]
+
+//li[@class='hidden-xs']/a/@href
+'''
+
+
+'''
+过程
+scrapy startproject xxx创建一个爬虫项目
+scrapy genspider -t crawl qsbk2auto yicommunity.com创建爬虫文件crawl 是自动爬虫的模板
+scrapy crawl xxx运行爬虫文件
+与basic模板相比，crawl模板不用设置for循环，只需要在setting中运行user-Agent就可以实现自动爬虫
+爬虫项目
+一个scrapy爬虫项目包括__init__,settings,middlewares,pipelines,items五个初始文件
+items.py最先运行，因为它创建相关的容器
+然后是自己创建的爬虫文件，通过比如说start_urls开始访问网页，网页response回到爬虫文件中的parse方法
+然后是爬虫文件的产生的相关信息返回给pipelines进行加工处理，比如保存到本地，写入数据库
+
+Scrapy运行流程大概如下：
+引擎（scrapy）从调度器（scheduler）中取出一个链接(URL)用于接下来的抓取
+引擎把URL封装成一个请求(Request)传给下载器（downloader）
+下载器（downloader）把资源下载下来，并封装成应答包(Response)
+爬虫（spider）解析Response
+解析出实体（Item）,则交给实体管道（item-pipelines）进行进一步的处理
+解析出的是链接（URL）,则把URL交给调度器（scheduler）等待抓取
+
+爬虫文件
+• name ： 该属性为定义爬虫名称的字符串。
+• s t a r t u r l s ： 该属性定义了爬虫起始URL 列表。不过， s t a r t u r l s的默认值与我们想要的不一样， 在example.webscraping .com域名之前多了WWW 前缀。
+• allowed domains ： 该属性定义了可以爬取的域名列表。如果没有定义该属性， 则表示可以爬取任何域名。
+• ru l e s ： 该属性为一个正则表达式集合， 用于告知爬虫需要跟踪哪些链接。
+
+pipeline设置完成后需在setting中开启pipeline
+浏览器伪装user_agent设置后也需要在setting中开启
+'''
