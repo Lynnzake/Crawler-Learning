@@ -1,0 +1,203 @@
+#抓取千图网的图片
+
+import urllib.request
+import re
+import urllib.error
+for i in range(1,10):
+    pageurl="http://www.58pic.com/haibaomoban/0/id-"+str(i)+".html"
+    data=urllib.request.urlopen(pageurl).read().decode("utf-8","ignore")
+    pat='<a class="thumb-box".*?src="(.*?).jpg!'
+    imglist=re.compile(pat).findall(data)
+    for j in range(0,len(imglist)):
+        try:
+            thisimg=imglist[j]
+            thisimg+"_1024.jpg"
+            file="G:/PM/netcrawler_learning/58pic"+str(i)+str(j)+".jpg"
+            urllib.request.urlretrieve(thisimgurl,filename=file)
+            print("第"+str(i)+"页第"+str(j)+"个图片爬取成功")
+        except urllib.error.URLError as e:
+            if hasattr(e,"code"):
+                print(e.code)
+            if hasattr(e,"reason"):
+                print(e.reason)
+        except Exception as e:
+            print(e)
+
+#抓包分析
+#所谓抓包分析，即将网络传输发送与接收的数据包进行抓取的操作，做爬虫时，数据不一定
+#就在HTML源码中，很可能隐藏在一些网址中，所以，我们要抓取某些数据，就需要进行抓包
+#分析出对应数据所隐藏在的网址，然后分析规律并爬取
+#可使用FIDDLER进行抓包分析，FIDDLER作为代理服务器完成本地与网页服务器之间的中转
+#u'\u674e\u6613'可完成解码
+#爬取腾讯视频评论
+import urllib.request
+import re
+import urllib.error
+header=("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36")
+opener=urllib.request.build_opener()
+opener.addheaders=[header]#伪装成浏览器
+urllib.request.install_opener(opener)
+comid="6165793094371986503"
+videourl="http://video"+comid
+for i in range(0,100):
+    data=urllib.request.urlopen(url).read().decode()
+    patnext='"last":"(.*?)"'
+    nextid=re.compile(patnext).findall(data)[0]
+    patcom='"content":"(.*?)",'
+    re.compile(patcom).findall(data)
+    for j in range(0,len(comdata)):
+        print("第"+str(i)+str(j)+"条评论内容是：")
+        print(eval('u'"+comdata[j]+"''))
+    videourl="http://video"+nextid
+
+#微信爬虫
+#微信爬虫，即自动获取微信的相关文章信息的一种爬虫。微信的限制很多，可采用伪装
+#浏览器、使用代理IP等方式解决
+#http://weixin.sogou.com/
+import re
+import urllib.request
+import time
+import urllib.error
+#自定义函数，功能为使用代理服务器爬一个网址
+def use_proxy(proxy_addr,url):
+    #建立异常处理机制
+    try:
+        req=urllib.request.Request(url)
+        req.add_header("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36")
+        #header模拟成浏览器，opener使用代理服务器
+        proxy=urllib.request.ProxyHandler({'http':proxy_addr})
+        opener=urllib.request.build_opener(proxy,urllib.request.HTTPHandler)
+        urllib.request.install_opener(opener)
+        data=urllib.request.urlopen(req).read()
+        return data
+    except urllib.error.URLError as e:
+        if hasattr(e,"code"):
+            print(e.code)
+        if hasattr(e,"reason"):
+            print(e.reason)
+        #若为URLError异常，延时10秒执行
+        time.sleep(10)
+    except Exception as e:
+        print("exception:"+str(e))
+        #若为Exception异常，延时1秒执行
+        time.sleep(1)
+#设置关键词
+key="Python"
+#设置代理服务器，该代理服务器有可能失效，需要换成新的有效代理服务器
+proxy="127.0.0.1:8888"
+#爬多少页
+for i in range(0,10):
+    key=urllib.request.quote(key)#quote对关键字进行编码
+    thispageurl="http://weixin,sogou.com/weixin?type=2&query="+key+"&page="+str(i)
+    #a="http://blog.csdn.net"
+    thispagedata=use_proxy(proxy,thispageurl)
+    print(len(str(thispagedata)))
+    pat1='<a href="(.*?)"'
+    rs1=re.compile(pat1,re.S).findall(str(thispagedata))#re.S可以匹配多行
+    if(len(rs1)==0)):
+        print("此次（"+str(i)+"页)没成功)
+        continue
+    for j in range(0,len(rs1)):
+        thisurl=rs1[j]
+        thisurl=thisurl.replace("amp:","")#爬取到的网址和源代码中的网址并不一致，故将爬取到的网址张的amp:去掉
+        file="G:/PM/netcrawler_learning/weixintxt"+str(i)+"页第"+str(j)+"篇文章.html"
+        thisdata=use_proxy(proxy,thisurl)
+        try:
+            fh=open(file,"wb")
+            fh.write(thisdata)
+            fh.close()
+            print("第"+str(i)+"页第"+str(j)+"篇文章成功")
+        except Exception as e:
+            print(e)
+            print("第"+str(i)+"页第"+str(j)+"篇文章失败")
+#多线程爬虫
+#所谓多线程，即程序中的某些程序段并行执行，合理地设置多线程，可以让爬虫效率更高
+#普通的糗事百科段子爬虫
+import urllib.request
+import re
+import urllib.error
+header=("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36")
+opener=urllib.request.build_opener()
+opener.addheaders=[header]#伪装成浏览器
+urllib.request.install_opener(opener)
+for i in range(1,2):
+    url="http://www.qiushibaike.com/8hr/page/"+str(i)
+    pagedata=urllib.request.urlopen(url).read().decode("utf-8","ignore")
+    pat='<div class="content">.*?<span>(.*?)</span>,*?</div>'
+    datalist=re.compile(pat,re.S).findall(pagedata)
+    for j in range(0,len(datalist)):
+        print("第"+str(i)+"页第"+str(j)+"个段子的内容是")
+        print(datalist[j])
+#多线程的糗事百科爬虫
+'''
+import threading#多线程模块
+class A(threading.Thread):#设置A为一个线程，一个线程内至少要有两个方法
+    def __init__(self):#初始化线程
+        threading.Thread.__init__(self)
+    def run(self):#线程要做什么事情，都在run()里面定义
+        for i in range(0,5):
+            print("我是线程A")
+class B(threading.Thread):
+    def __init__(self):#初始化线程
+        threading.Thread.__init__(self)
+    def run(self)
+        for i in range(0,5):
+            print("我是线程B")
+t1=A()#线程实例化
+t1.start()
+t2=B()
+t2.start
+'''
+import urllib.request
+import re
+import urllib.error
+import threading
+header=("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36")
+opener=urllib.request.build_opener()
+opener.addheaders=[header]#伪装成浏览器
+urllib.request.install_opener(opener)
+#两个线程，一个爬取奇数页，一个爬取偶数页
+class evenpage(threading.Thread):
+    def __init__(self):#初始化线程
+        threading.Thread.__init__(self)
+    def run(self):
+        for i in range(1,36,2):
+            try:
+                url="http://www.qiushibaike.com/8hr/page/"+str(i)
+                pagedata=urllib.request.urlopen(url).read().decode("utf-8","ignore")
+                pat='<div class="content">.*?<span>(.*?)</span>,*?</div>'
+                datalist=re.compile(pat,re.S).findall(pagedata)
+                for j in range(0,len(datalist)):
+                    print("第"+str(i)+"页第"+str(j)+"个段子的内容是")
+                    print(datalist[j])
+            except urllib.error.URLError as e:
+                if hasattr(e,"code"):
+                    print(e.code)
+                if hasattr(e,"reason"):
+                    print(e.reason)
+            except Exception as e:
+                print(e)
+class unevenpage(threading.Thread):
+    def __init__(self):#初始化线程
+        threading.Thread.__init__(self)
+    def run(self):
+        for i in range(0,36,2):
+            try:
+                url="http://www.qiushibaike.com/8hr/page/"+str(i)
+                pagedata=urllib.request.urlopen(url).read().decode("utf-8","ignore")
+                pat='<div class="content">.*?<span>(.*?)</span>,*?</div>'
+                datalist=re.compile(pat,re.S).findall(pagedata)
+                for j in range(0,len(datalist)):
+                   print("第"+str(i)+"页第"+str(j)+"个段子的内容是")
+                    print(datalist[j])
+            except urllib.error.URLError as e:
+                if hasattr(e,"code"):
+                    print(e.code)
+                if hasattr(e,"reason"):
+                    print(e.reason)
+            except Exception as e:
+                print(e)
+even=evenpage()
+even.start()
+uneven=unevevpage()
+uneven.start()
