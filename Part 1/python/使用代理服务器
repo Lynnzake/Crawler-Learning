@@ -1,0 +1,15 @@
+'''
+所谓代理服务器，是一个处于我们与互联网中间的服务器，如果使用代理服务器，我们浏览信息
+的时候，先向代理服务器发出请求，然后由代理服务器向互联网获取信息，再返回给我们。
+使用代理服务器进行爬取，可以很好地解决IP限制的问题'''
+import urllib.request
+def use_proxy(url,addr):#opener用于模拟报头，将代理服务器的IP添加到报头中
+    proxy=urllib.request.ProxyHandler({"http":addr})
+    opener=urllib.request.build_opener(proxy,urllib.request.HTTPHandler)
+    urllib.request.install_opener(opener)
+    data=urllib.request.urlopen(url).read().decode("utf-8","ignore")#opener设置为全局对象后urlopen才能正常使用
+    return data
+proxy_addr="47.112.222.34:8000"
+url="http://www.baidu.com"
+data=use_proxy(url,proxy_addr)
+print(len(data))
