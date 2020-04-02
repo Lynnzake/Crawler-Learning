@@ -1,0 +1,13 @@
+1.[Failure instance: Traceback: <class 'KeyError'>: 'article_content'
+#when i try to connect mysql,the mistake happened
+#First I checked the match-status between elements and symbols
+insert into article(read_count,article_content,article_author,article_title,article_pubTime,article_id,subjects,origin_url,article_avatar,
+word_count,comment_count,like_count) values(%d,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%d)
+#And I found that the result is the crawled elelment "article_content" is a list object,so i transformed it to a string object by using join()
+def connect_list_vector(self,contents):
+        if len(contents)>1:
+            str_article_content='.'.join(contents)
+            return str_article_content
+        else:
+            return contents
+#Problem solved
