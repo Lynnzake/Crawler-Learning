@@ -1,4 +1,7 @@
 1.[Failure instance: Traceback: <class 'KeyError'>: 'article_content'
+#The reason is that the key value is wrong. Generally, the CSS selector cannot get the corresponding value on the page 
+#(for example, the page is changed to cause it is not a regular page). 
+#The value of the spider does not correspond to the item key.
 #when i try to connect mysql,the mistake happened
 #First I checked the match-status between elements and symbols
 insert into article(read_count,article_content,article_author,article_title,article_pubTime,article_id,subjects,origin_url,article_avatar,
@@ -12,4 +15,4 @@ def connect_list_vector(self,contents):
             return contents
 #Problem solved
 2.[Failure instance: Traceback: <class 'pymysql.err.InternalError'>: (1054, "Unknown column 'like_count' in 'field list'")
-the key-value in program did't match with database
+#The database field is not the same as the item key
