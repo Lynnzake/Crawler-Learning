@@ -11,3 +11,5 @@ def connect_list_vector(self,contents):
         else:
             return contents
 #Problem solved
+2.[Failure instance: Traceback: <class 'pymysql.err.InternalError'>: (1054, "Unknown column 'like_count' in 'field list'")
+the key-value in program did't match with database
